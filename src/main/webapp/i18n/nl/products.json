@@ -1,0 +1,26 @@
+{
+  "marketApp": {
+    "products": {
+      "home": {
+        "title": "Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Maak een nieuwe Products",
+        "createOrEditLabel": "Maak of wijzig een Products",
+        "notFound": "No Products found"
+      },
+      "created": "A new Products is created with identifier {{ param }}",
+      "updated": "A Products is updated with identifier {{ param }}",
+      "deleted": "A Products is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Products {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Products"
+      },
+      "id": "ID",
+      "name": "Name",
+      "price": "Price",
+      "description": "Description"
+    }
+  }
+}

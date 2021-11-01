@@ -1,0 +1,26 @@
+{
+  "marketApp": {
+    "products": {
+      "home": {
+        "title": "Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Products बनाएँ",
+        "createOrEditLabel": "Products बनाएँ या संपादित करें",
+        "notFound": "No Products found"
+      },
+      "created": "एक नया Products [identifier: {{ param }}] तैयार है",
+      "updated": "एक Products [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Products [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Products [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Products"
+      },
+      "id": "ID",
+      "name": "Name",
+      "price": "Price",
+      "description": "Description"
+    }
+  }
+}

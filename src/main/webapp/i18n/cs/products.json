@@ -1,0 +1,26 @@
+{
+  "marketApp": {
+    "products": {
+      "home": {
+        "title": "Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Vytvořit Products",
+        "createOrEditLabel": "Vytvořit nebo upravit Products",
+        "notFound": "No Products found"
+      },
+      "created": "Byl vytvořen potomek entity Products s identifikátorem {{ param }}",
+      "updated": "Potomek entity Products s identifikátorem {{ param }} byl upravený.",
+      "deleted": "Potomek entity Products s identifikátorem {{ param }} bol smazaný.",
+      "delete": {
+        "question": "Jste si jisti, že chcete smazat Products {{ id }}?"
+      },
+      "detail": {
+        "title": "Products"
+      },
+      "id": "ID",
+      "name": "Name",
+      "price": "Price",
+      "description": "Description"
+    }
+  }
+}

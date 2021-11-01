@@ -1,0 +1,10 @@
+
+entity Products {
+	name String,
+    price Long,
+    description String
+}
+
+
+service all with serviceImpl
+
