@@ -169,4 +169,9 @@ public class ProductsResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @GetMapping("/products/{name}")
+    public Products findByName(String name) {
+        return productsService.findByName(name);
+    }
 }

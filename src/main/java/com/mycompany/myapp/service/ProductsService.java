@@ -45,4 +45,6 @@ public interface ProductsService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Products findByName(String name);
 }
