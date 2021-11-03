@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:sqlserver://localhost:1433;database=PoloMarket
-    username: SA
-    password: yourStrong(!)Password
+    url: jdbc:sqlserver://148.81.196.51\LABSQLSVR01:49203;database=49084
+    username: PL49084
+    password: Polska1!
     hikari:
       poolName: Hikari
       auto-commit: false
