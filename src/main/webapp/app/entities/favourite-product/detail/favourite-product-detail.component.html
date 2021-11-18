@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="favouriteProduct">
+      <h2 data-cy="favouriteProductDetailsHeading">
+        <span jhiTranslate="poloMarketApp.favouriteProduct.detail.title">Favourite Product</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ favouriteProduct.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="poloMarketApp.favouriteProduct.userId">User Id</span></dt>
+        <dd>
+          <span>{{ favouriteProduct.userId }}</span>
+        </dd>
+        <dt><span jhiTranslate="poloMarketApp.favouriteProduct.product">Product</span></dt>
+        <dd>
+          <div *ngIf="favouriteProduct.product">
+            <a [routerLink]="['/product', favouriteProduct.product?.id, 'view']">{{ favouriteProduct.product?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/favourite-product', favouriteProduct.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

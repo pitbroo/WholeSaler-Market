@@ -32,9 +32,12 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:sqlserver://148.81.196.51\LABSQLSVR01:49203;database=49084
-    username: PL49084
-    password: Polska1!
+    url: jdbc:sqlserver://localhost;database=WsMdb
+    username: dev
+    password: Password123!
+#    url: jdbc:sqlserver://148.81.196.51\LABSQLSVR01:49203;database=49084
+#    username: PL49084
+#    password: Polska1!
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -105,7 +108,7 @@ jhipster:
       enabled: false
       host: localhost
       port: 5000
-      queue-size: 512
+      queue-size: 51
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

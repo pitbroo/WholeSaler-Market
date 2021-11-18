@@ -1,0 +1,25 @@
+{
+  "poloMarketApp": {
+    "favouriteProduct": {
+      "home": {
+        "title": "FavouriteProducts",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Favourite Product",
+        "createOrEditLabel": "Créer ou éditer un Favourite Product",
+        "notFound": "Aucun Favourite Product trouvé"
+      },
+      "created": "Un nouveau Favourite Product a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Favourite Product avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Favourite Product avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Favourite Product {{ id }} ?"
+      },
+      "detail": {
+        "title": "Favourite Product"
+      },
+      "id": "ID",
+      "userId": "User Id",
+      "product": "Product"
+    }
+  }
+}

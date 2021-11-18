@@ -1,0 +1,17 @@
+
+entity Product {
+	name String,
+    price Long
+}
+
+entity FavouriteProduct {
+    userId Long
+}
+
+relationship OneToMany {
+	Product to FavouriteProduct
+}
+
+
+service all with serviceImpl
+
