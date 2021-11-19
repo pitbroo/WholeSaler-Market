@@ -19,7 +19,7 @@ export class FavouriteProductComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.favouriteProductService.query("user").subscribe(
+    this.favouriteProductService.query().subscribe(
       (res: HttpResponse<IFavouriteProduct[]>) => {
         this.isLoading = false;
         this.favouriteProducts = res.body ?? [];

@@ -67,6 +67,6 @@ public class FavouriteProductServiceImpl implements FavouriteProductService {
     @Override
     public List<FavouriteProduct> findAllByUser(String user) {
         log.debug("Request to get FavouriteProduct by user : {}", user);
-        return favouriteProductRepository.findAllByUser_Login(user);
+        return favouriteProductRepository.findByUserIsCurrentUser(user);
     }
 }

@@ -12,5 +12,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface FavouriteProductRepository extends JpaRepository<FavouriteProduct, Long> {
-    List<FavouriteProduct> findAllById(Long userId);
+    @Query("select favouriteProduct from FavouriteProduct favouriteProduct where favouriteProduct.user.login = ?#{principal.username}")
+    List<FavouriteProduct> findByUserIsCurrentUser(String username);
 }
