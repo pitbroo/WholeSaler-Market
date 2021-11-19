@@ -30,8 +30,6 @@ public interface FavouriteProductService {
      * @return the list of entities.
      */
     List<FavouriteProduct> findAll();
-    //By user - dopiane przez PB
-    List<FavouriteProduct> findAllByUser(String User);
 
     /**
      * Get the "id" favouriteProduct.

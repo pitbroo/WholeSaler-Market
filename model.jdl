@@ -16,4 +16,4 @@ relationship ManyToOne {
 
 
 service all with serviceImpl
-
+filter *

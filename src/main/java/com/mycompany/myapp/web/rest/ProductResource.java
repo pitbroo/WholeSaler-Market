@@ -2,7 +2,9 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Product;
 import com.mycompany.myapp.repository.ProductRepository;
+import com.mycompany.myapp.service.ProductQueryService;
 import com.mycompany.myapp.service.ProductService;
+import com.mycompany.myapp.service.criteria.ProductCriteria;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,9 +37,12 @@ public class ProductResource {
 
     private final ProductRepository productRepository;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository) {
+    private final ProductQueryService productQueryService;
+
+    public ProductResource(ProductService productService, ProductRepository productRepository, ProductQueryService productQueryService) {
         this.productService = productService;
         this.productRepository = productRepository;
+        this.productQueryService = productQueryService;
     }
 
     /**
@@ -131,12 +136,26 @@ public class ProductResource {
     /**
      * {@code GET  /products} : get all the products.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        log.debug("REST request to get all Products");
-        return productService.findAll();
+    public ResponseEntity<List<Product>> getAllProducts(ProductCriteria criteria) {
+        log.debug("REST request to get Products by criteria: {}", criteria);
+        List<Product> entityList = productQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /products/count} : count all the products.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/products/count")
+    public ResponseEntity<Long> countProducts(ProductCriteria criteria) {
+        log.debug("REST request to count Products by criteria: {}", criteria);
+        return ResponseEntity.ok().body(productQueryService.countByCriteria(criteria));
     }
 
     /**

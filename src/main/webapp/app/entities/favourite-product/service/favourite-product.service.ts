@@ -42,7 +42,7 @@ export class FavouriteProductService {
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IFavouriteProduct[]>(this.resourceUrl+"?login=admin", { params: options, observe: 'response' });
+    return this.http.get<IFavouriteProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

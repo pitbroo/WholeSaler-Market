@@ -7,7 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.FavouriteProduct;
+import com.mycompany.myapp.domain.Product;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.FavouriteProductRepository;
+import com.mycompany.myapp.service.criteria.FavouriteProductCriteria;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -136,6 +139,113 @@ class FavouriteProductResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(favouriteProduct.getId().intValue()));
+    }
+
+    @Test
+    @Transactional
+    void getFavouriteProductsByIdFiltering() throws Exception {
+        // Initialize the database
+        favouriteProductRepository.saveAndFlush(favouriteProduct);
+
+        Long id = favouriteProduct.getId();
+
+        defaultFavouriteProductShouldBeFound("id.equals=" + id);
+        defaultFavouriteProductShouldNotBeFound("id.notEquals=" + id);
+
+        defaultFavouriteProductShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultFavouriteProductShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultFavouriteProductShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultFavouriteProductShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllFavouriteProductsByUserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        favouriteProductRepository.saveAndFlush(favouriteProduct);
+        User user;
+        if (TestUtil.findAll(em, User.class).isEmpty()) {
+            user = UserResourceIT.createEntity(em);
+            em.persist(user);
+            em.flush();
+        } else {
+            user = TestUtil.findAll(em, User.class).get(0);
+        }
+        em.persist(user);
+        em.flush();
+        favouriteProduct.setUser(user);
+        favouriteProductRepository.saveAndFlush(favouriteProduct);
+        Long userId = user.getId();
+
+        // Get all the favouriteProductList where user equals to userId
+        defaultFavouriteProductShouldBeFound("userId.equals=" + userId);
+
+        // Get all the favouriteProductList where user equals to (userId + 1)
+        defaultFavouriteProductShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllFavouriteProductsByProductIsEqualToSomething() throws Exception {
+        // Initialize the database
+        favouriteProductRepository.saveAndFlush(favouriteProduct);
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        em.persist(product);
+        em.flush();
+        favouriteProduct.setProduct(product);
+        favouriteProductRepository.saveAndFlush(favouriteProduct);
+        Long productId = product.getId();
+
+        // Get all the favouriteProductList where product equals to productId
+        defaultFavouriteProductShouldBeFound("productId.equals=" + productId);
+
+        // Get all the favouriteProductList where product equals to (productId + 1)
+        defaultFavouriteProductShouldNotBeFound("productId.equals=" + (productId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultFavouriteProductShouldBeFound(String filter) throws Exception {
+        restFavouriteProductMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(favouriteProduct.getId().intValue())));
+
+        // Check, that the count call also returns 1
+        restFavouriteProductMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultFavouriteProductShouldNotBeFound(String filter) throws Exception {
+        restFavouriteProductMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restFavouriteProductMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

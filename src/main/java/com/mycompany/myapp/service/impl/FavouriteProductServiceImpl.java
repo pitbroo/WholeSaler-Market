@@ -62,11 +62,4 @@ public class FavouriteProductServiceImpl implements FavouriteProductService {
         log.debug("Request to delete FavouriteProduct : {}", id);
         favouriteProductRepository.deleteById(id);
     }
-
-    /** Dopisane przez nas */
-    @Override
-    public List<FavouriteProduct> findAllByUser(String user) {
-        log.debug("Request to get FavouriteProduct by user : {}", user);
-        return favouriteProductRepository.findByUserIsCurrentUser(user);
-    }
 }
