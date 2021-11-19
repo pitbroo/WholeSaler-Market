@@ -5,13 +5,15 @@ entity Product {
 }
 
 entity FavouriteProduct {
-    userId Long
 }
 
 relationship OneToMany {
 	Product to FavouriteProduct
 }
+relationship ManyToOne {
+	FavouriteProduct{user(login)} to User
+}
 
 
 service all with serviceImpl
-
+filter *

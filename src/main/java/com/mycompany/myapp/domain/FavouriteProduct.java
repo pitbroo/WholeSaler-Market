@@ -22,8 +22,8 @@ public class FavouriteProduct implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    private User user;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "favouriteProducts" }, allowSetters = true)
@@ -44,17 +44,17 @@ public class FavouriteProduct implements Serializable {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return this.userId;
+    public User getUser() {
+        return this.user;
     }
 
-    public FavouriteProduct userId(Long userId) {
-        this.setUserId(userId);
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public FavouriteProduct user(User user) {
+        this.setUser(user);
         return this;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Product getProduct() {
@@ -94,7 +94,6 @@ public class FavouriteProduct implements Serializable {
     public String toString() {
         return "FavouriteProduct{" +
             "id=" + getId() +
-            ", userId=" + getUserId() +
             "}";
     }
 }

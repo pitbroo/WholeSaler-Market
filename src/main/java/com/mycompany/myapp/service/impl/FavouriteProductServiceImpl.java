@@ -38,10 +38,6 @@ public class FavouriteProductServiceImpl implements FavouriteProductService {
         return favouriteProductRepository
             .findById(favouriteProduct.getId())
             .map(existingFavouriteProduct -> {
-                if (favouriteProduct.getUserId() != null) {
-                    existingFavouriteProduct.setUserId(favouriteProduct.getUserId());
-                }
-
                 return existingFavouriteProduct;
             })
             .map(favouriteProductRepository::save);
@@ -52,13 +48,6 @@ public class FavouriteProductServiceImpl implements FavouriteProductService {
     public List<FavouriteProduct> findAll() {
         log.debug("Request to get all FavouriteProducts");
         return favouriteProductRepository.findAll();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<FavouriteProduct> findAllByUserId(Long id) {
-        log.debug("Request to get all FavouriteProducts by userId");
-        return favouriteProductRepository.findAllByUserId(id);
     }
 
     @Override

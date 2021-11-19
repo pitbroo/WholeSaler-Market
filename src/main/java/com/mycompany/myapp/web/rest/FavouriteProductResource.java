@@ -2,7 +2,9 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.FavouriteProduct;
 import com.mycompany.myapp.repository.FavouriteProductRepository;
+import com.mycompany.myapp.service.FavouriteProductQueryService;
 import com.mycompany.myapp.service.FavouriteProductService;
+import com.mycompany.myapp.service.criteria.FavouriteProductCriteria;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,12 +37,16 @@ public class FavouriteProductResource {
 
     private final FavouriteProductRepository favouriteProductRepository;
 
+    private final FavouriteProductQueryService favouriteProductQueryService;
+
     public FavouriteProductResource(
         FavouriteProductService favouriteProductService,
-        FavouriteProductRepository favouriteProductRepository
+        FavouriteProductRepository favouriteProductRepository,
+        FavouriteProductQueryService favouriteProductQueryService
     ) {
         this.favouriteProductService = favouriteProductService;
         this.favouriteProductRepository = favouriteProductRepository;
+        this.favouriteProductQueryService = favouriteProductQueryService;
     }
 
     /**
@@ -137,12 +143,26 @@ public class FavouriteProductResource {
     /**
      * {@code GET  /favourite-products} : get all the favouriteProducts.
      *
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of favouriteProducts in body.
      */
     @GetMapping("/favourite-products")
-    public List<FavouriteProduct> getAllFavouriteProducts() {
-        log.debug("REST request to get all FavouriteProducts");
-        return favouriteProductService.findAll();
+    public ResponseEntity<List<FavouriteProduct>> getAllFavouriteProducts(FavouriteProductCriteria criteria) {
+        log.debug("REST request to get FavouriteProducts by criteria: {}", criteria);
+        List<FavouriteProduct> entityList = favouriteProductQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /favourite-products/count} : count all the favouriteProducts.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/favourite-products/count")
+    public ResponseEntity<Long> countFavouriteProducts(FavouriteProductCriteria criteria) {
+        log.debug("REST request to count FavouriteProducts by criteria: {}", criteria);
+        return ResponseEntity.ok().body(favouriteProductQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -172,12 +192,5 @@ public class FavouriteProductResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-//    DOPISANE PRZEZ NAS
-    @GetMapping("favourite-productsByUserId/{userId}")
-    public  List<FavouriteProduct> getFavouriteProductsByUserId(@PathVariable Long userId){
-        log.debug("REST request to delete FavouriteProduct by userid");
-        return favouriteProductService.findAllByUserId(userId);
     }
 }

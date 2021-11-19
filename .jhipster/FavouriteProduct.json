@@ -1,12 +1,14 @@
 {
   "name": "FavouriteProduct",
-  "fields": [
-    {
-      "fieldName": "userId",
-      "fieldType": "Long"
-    }
-  ],
+  "fields": [],
   "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "favouriteProduct",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "product",
@@ -18,7 +20,7 @@
   "dto": "no",
   "pagination": "no",
   "service": "serviceImpl",
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "fluentMethods": true,
   "readOnly": false,
   "embedded": false,

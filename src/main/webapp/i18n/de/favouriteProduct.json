@@ -18,7 +18,7 @@
         "title": "Favourite Product"
       },
       "id": "ID",
-      "userId": "User Id",
+      "user": "User",
       "product": "Product"
     }
   }
