@@ -29,9 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class FavouriteProductResourceIT {
 
-    private static final Long DEFAULT_USER_ID = 1L;
-    private static final Long UPDATED_USER_ID = 2L;
-
     private static final String ENTITY_API_URL = "/api/favourite-products";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -56,7 +53,7 @@ class FavouriteProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FavouriteProduct createEntity(EntityManager em) {
-        FavouriteProduct favouriteProduct = new FavouriteProduct().userId(DEFAULT_USER_ID);
+        FavouriteProduct favouriteProduct = new FavouriteProduct();
         return favouriteProduct;
     }
 
@@ -67,7 +64,7 @@ class FavouriteProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FavouriteProduct createUpdatedEntity(EntityManager em) {
-        FavouriteProduct favouriteProduct = new FavouriteProduct().userId(UPDATED_USER_ID);
+        FavouriteProduct favouriteProduct = new FavouriteProduct();
         return favouriteProduct;
     }
 
@@ -91,7 +88,6 @@ class FavouriteProductResourceIT {
         List<FavouriteProduct> favouriteProductList = favouriteProductRepository.findAll();
         assertThat(favouriteProductList).hasSize(databaseSizeBeforeCreate + 1);
         FavouriteProduct testFavouriteProduct = favouriteProductList.get(favouriteProductList.size() - 1);
-        assertThat(testFavouriteProduct.getUserId()).isEqualTo(DEFAULT_USER_ID);
     }
 
     @Test
@@ -125,8 +121,7 @@ class FavouriteProductResourceIT {
             .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(favouriteProduct.getId().intValue())))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(favouriteProduct.getId().intValue())));
     }
 
     @Test
@@ -140,8 +135,7 @@ class FavouriteProductResourceIT {
             .perform(get(ENTITY_API_URL_ID, favouriteProduct.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(favouriteProduct.getId().intValue()))
-            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()));
+            .andExpect(jsonPath("$.id").value(favouriteProduct.getId().intValue()));
     }
 
     @Test
@@ -163,7 +157,6 @@ class FavouriteProductResourceIT {
         FavouriteProduct updatedFavouriteProduct = favouriteProductRepository.findById(favouriteProduct.getId()).get();
         // Disconnect from session so that the updates on updatedFavouriteProduct are not directly saved in db
         em.detach(updatedFavouriteProduct);
-        updatedFavouriteProduct.userId(UPDATED_USER_ID);
 
         restFavouriteProductMockMvc
             .perform(
@@ -177,7 +170,6 @@ class FavouriteProductResourceIT {
         List<FavouriteProduct> favouriteProductList = favouriteProductRepository.findAll();
         assertThat(favouriteProductList).hasSize(databaseSizeBeforeUpdate);
         FavouriteProduct testFavouriteProduct = favouriteProductList.get(favouriteProductList.size() - 1);
-        assertThat(testFavouriteProduct.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test
@@ -262,7 +254,6 @@ class FavouriteProductResourceIT {
         List<FavouriteProduct> favouriteProductList = favouriteProductRepository.findAll();
         assertThat(favouriteProductList).hasSize(databaseSizeBeforeUpdate);
         FavouriteProduct testFavouriteProduct = favouriteProductList.get(favouriteProductList.size() - 1);
-        assertThat(testFavouriteProduct.getUserId()).isEqualTo(DEFAULT_USER_ID);
     }
 
     @Test
@@ -277,8 +268,6 @@ class FavouriteProductResourceIT {
         FavouriteProduct partialUpdatedFavouriteProduct = new FavouriteProduct();
         partialUpdatedFavouriteProduct.setId(favouriteProduct.getId());
 
-        partialUpdatedFavouriteProduct.userId(UPDATED_USER_ID);
-
         restFavouriteProductMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedFavouriteProduct.getId())
@@ -291,7 +280,6 @@ class FavouriteProductResourceIT {
         List<FavouriteProduct> favouriteProductList = favouriteProductRepository.findAll();
         assertThat(favouriteProductList).hasSize(databaseSizeBeforeUpdate);
         FavouriteProduct testFavouriteProduct = favouriteProductList.get(favouriteProductList.size() - 1);
-        assertThat(testFavouriteProduct.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test

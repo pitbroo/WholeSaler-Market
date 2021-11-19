@@ -1,12 +1,14 @@
 {
   "name": "FavouriteProduct",
-  "fields": [
-    {
-      "fieldName": "userId",
-      "fieldType": "Long"
-    }
-  ],
+  "fields": [],
   "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "favouriteProduct",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "product",

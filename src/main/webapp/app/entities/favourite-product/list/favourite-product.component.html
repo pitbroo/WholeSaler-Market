@@ -33,7 +33,7 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-          <th scope="col"><span jhiTranslate="poloMarketApp.favouriteProduct.userId">User Id</span></th>
+          <th scope="col"><span jhiTranslate="poloMarketApp.favouriteProduct.user">User</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.favouriteProduct.product">Product</span></th>
           <th scope="col"></th>
         </tr>
@@ -43,7 +43,9 @@
           <td>
             <a [routerLink]="['/favourite-product', favouriteProduct.id, 'view']">{{ favouriteProduct.id }}</a>
           </td>
-          <td>{{ favouriteProduct.userId }}</td>
+          <td>
+            {{ favouriteProduct.user?.login }}
+          </td>
           <td>
             <div *ngIf="favouriteProduct.product">
               <a [routerLink]="['/product', favouriteProduct.product?.id, 'view']">{{ favouriteProduct.product?.id }}</a>

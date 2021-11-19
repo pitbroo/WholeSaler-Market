@@ -12,5 +12,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface FavouriteProductRepository extends JpaRepository<FavouriteProduct, Long> {
-    List<FavouriteProduct> findAllByUserId(Long id);
+    List<FavouriteProduct> findAllById(Long userId);
 }

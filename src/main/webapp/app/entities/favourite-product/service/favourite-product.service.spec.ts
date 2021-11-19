@@ -21,7 +21,6 @@ describe('FavouriteProduct Service', () => {
 
     elemDefault = {
       id: 0,
-      userId: 0,
     };
   });
 
@@ -57,7 +56,6 @@ describe('FavouriteProduct Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          userId: 1,
         },
         elemDefault
       );
@@ -72,12 +70,7 @@ describe('FavouriteProduct Service', () => {
     });
 
     it('should partial update a FavouriteProduct', () => {
-      const patchObject = Object.assign(
-        {
-          userId: 1,
-        },
-        new FavouriteProduct()
-      );
+      const patchObject = Object.assign({}, new FavouriteProduct());
 
       const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -94,7 +87,6 @@ describe('FavouriteProduct Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          userId: 1,
         },
         elemDefault
       );
@@ -146,7 +138,7 @@ describe('FavouriteProduct Service', () => {
       });
 
       it('should add only unique FavouriteProduct to an array', () => {
-        const favouriteProductArray: IFavouriteProduct[] = [{ id: 123 }, { id: 456 }, { id: 1788 }];
+        const favouriteProductArray: IFavouriteProduct[] = [{ id: 123 }, { id: 456 }, { id: 67052 }];
         const favouriteProductCollection: IFavouriteProduct[] = [{ id: 123 }];
         expectedResult = service.addFavouriteProductToCollectionIfMissing(favouriteProductCollection, ...favouriteProductArray);
         expect(expectedResult).toHaveLength(3);

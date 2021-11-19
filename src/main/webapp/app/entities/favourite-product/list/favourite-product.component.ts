@@ -5,9 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IFavouriteProduct } from '../favourite-product.model';
 import { FavouriteProductService } from '../service/favourite-product.service';
 import { FavouriteProductDeleteDialogComponent } from '../delete/favourite-product-delete-dialog.component';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'jhi-favourite-product',
@@ -22,7 +19,7 @@ export class FavouriteProductComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.favouriteProductService.query(1).subscribe(
+    this.favouriteProductService.query("user").subscribe(
       (res: HttpResponse<IFavouriteProduct[]>) => {
         this.isLoading = false;
         this.favouriteProducts = res.body ?? [];

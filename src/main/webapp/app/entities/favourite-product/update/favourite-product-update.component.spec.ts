@@ -9,6 +9,9 @@ import { of, Subject } from 'rxjs';
 
 import { FavouriteProductService } from '../service/favourite-product.service';
 import { IFavouriteProduct, FavouriteProduct } from '../favourite-product.model';
+
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 
@@ -19,6 +22,7 @@ describe('FavouriteProduct Management Update Component', () => {
   let fixture: ComponentFixture<FavouriteProductUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let favouriteProductService: FavouriteProductService;
+  let userService: UserService;
   let productService: ProductService;
 
   beforeEach(() => {
@@ -33,12 +37,32 @@ describe('FavouriteProduct Management Update Component', () => {
     fixture = TestBed.createComponent(FavouriteProductUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     favouriteProductService = TestBed.inject(FavouriteProductService);
+    userService = TestBed.inject(UserService);
     productService = TestBed.inject(ProductService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
+    it('Should call User query and add missing value', () => {
+      const favouriteProduct: IFavouriteProduct = { id: 456 };
+      const user: IUser = { id: 7902 };
+      favouriteProduct.user = user;
+
+      const userCollection: IUser[] = [{ id: 39984 }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ favouriteProduct });
+      comp.ngOnInit();
+
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should call Product query and add missing value', () => {
       const favouriteProduct: IFavouriteProduct = { id: 456 };
       const product: IProduct = { id: 7525 };
@@ -60,6 +84,8 @@ describe('FavouriteProduct Management Update Component', () => {
 
     it('Should update editForm', () => {
       const favouriteProduct: IFavouriteProduct = { id: 456 };
+      const user: IUser = { id: 13576 };
+      favouriteProduct.user = user;
       const product: IProduct = { id: 90695 };
       favouriteProduct.product = product;
 
@@ -67,6 +93,7 @@ describe('FavouriteProduct Management Update Component', () => {
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(favouriteProduct));
+      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.productsSharedCollection).toContain(product);
     });
   });
@@ -136,6 +163,14 @@ describe('FavouriteProduct Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
+    describe('trackUserById', () => {
+      it('Should return tracked User primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackUserById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
     describe('trackProductById', () => {
       it('Should return tracked Product primary key', () => {
         const entity = { id: 123 };

@@ -174,10 +174,12 @@ public class FavouriteProductResource {
             .build();
     }
 
-//    DOPISANE PRZEZ NAS
-    @GetMapping("favourite-productsByUserId/{userId}")
-    public  List<FavouriteProduct> getFavouriteProductsByUserId(@PathVariable Long userId){
-        log.debug("REST request to delete FavouriteProduct by userid");
-        return favouriteProductService.findAllByUserId(userId);
+
+    /** Dopisane przez nas */
+
+    @GetMapping("/api/favourite-productsByUser/{user}")
+    public List<FavouriteProduct> getFavouriteProductsByUser(@PathVariable String user) {
+        log.debug("REST request to get all FavouriteProducts");
+        return favouriteProductService.findAllByUser(user);
     }
 }

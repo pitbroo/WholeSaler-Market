@@ -8,6 +8,12 @@
     -->
     <changeSet id="20211117000612-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="favourite_product"
+                                 constraintName="fk_favourite_product__user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
         <addForeignKeyConstraint baseColumnNames="product_id"
                                  baseTableName="favourite_product"
                                  constraintName="fk_favourite_product__product_id"

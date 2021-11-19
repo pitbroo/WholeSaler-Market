@@ -7,6 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 
 import { IFavouriteProduct, FavouriteProduct } from '../favourite-product.model';
 import { FavouriteProductService } from '../service/favourite-product.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 import { IProduct } from 'app/entities/product/product.model';
 import { ProductService } from 'app/entities/product/service/product.service';
 
@@ -17,16 +19,18 @@ import { ProductService } from 'app/entities/product/service/product.service';
 export class FavouriteProductUpdateComponent implements OnInit {
   isSaving = false;
 
+  usersSharedCollection: IUser[] = [];
   productsSharedCollection: IProduct[] = [];
 
   editForm = this.fb.group({
     id: [],
-    userId: [],
+    user: [],
     product: [],
   });
 
   constructor(
     protected favouriteProductService: FavouriteProductService,
+    protected userService: UserService,
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -52,6 +56,10 @@ export class FavouriteProductUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.favouriteProductService.create(favouriteProduct));
     }
+  }
+
+  trackUserById(index: number, item: IUser): number {
+    return item.id!;
   }
 
   trackProductById(index: number, item: IProduct): number {
@@ -80,10 +88,11 @@ export class FavouriteProductUpdateComponent implements OnInit {
   protected updateForm(favouriteProduct: IFavouriteProduct): void {
     this.editForm.patchValue({
       id: favouriteProduct.id,
-      userId: favouriteProduct.userId,
+      user: favouriteProduct.user,
       product: favouriteProduct.product,
     });
 
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, favouriteProduct.user);
     this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(
       this.productsSharedCollection,
       favouriteProduct.product
@@ -91,6 +100,12 @@ export class FavouriteProductUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
     this.productService
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
@@ -104,7 +119,7 @@ export class FavouriteProductUpdateComponent implements OnInit {
     return {
       ...new FavouriteProduct(),
       id: this.editForm.get(['id'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
+      user: this.editForm.get(['user'])!.value,
       product: this.editForm.get(['product'])!.value,
     };
   }

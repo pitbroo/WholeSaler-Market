@@ -12,7 +12,7 @@ export type EntityArrayResponseType = HttpResponse<IFavouriteProduct[]>;
 
 @Injectable({ providedIn: 'root' })
 export class FavouriteProductService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/favourite-productsByUserId/');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/favourite-products');
 
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -40,9 +40,9 @@ export class FavouriteProductService {
     return this.http.get<IFavouriteProduct>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(id: number, req?: any): Observable<EntityArrayResponseType> {
+  query(user: string, req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IFavouriteProduct[]>(this.resourceUrl+id.toString(), { params: options, observe: 'response' });
+    return this.http.get<IFavouriteProduct[]>(this.resourceUrl+"/ByUser/user", { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

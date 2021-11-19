@@ -1,8 +1,6 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.domain.FavouriteProduct;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +30,8 @@ public interface FavouriteProductService {
      * @return the list of entities.
      */
     List<FavouriteProduct> findAll();
-
-
-    @Transactional(readOnly = true)
-    List<FavouriteProduct> findAllByUserId(Long userId);
+    //By user - dopiane przez PB
+    List<FavouriteProduct> findAllByUser(String User);
 
     /**
      * Get the "id" favouriteProduct.
@@ -51,6 +47,4 @@ public interface FavouriteProductService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-
 }
