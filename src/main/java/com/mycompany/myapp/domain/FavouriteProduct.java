@@ -26,7 +26,7 @@ public class FavouriteProduct implements Serializable {
     private User user;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "favouriteProducts" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "boughtProducts", "soldProducts" }, allowSetters = true)
     private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

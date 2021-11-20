@@ -6,7 +6,6 @@ import com.mycompany.myapp.service.FavouriteProductQueryService;
 import com.mycompany.myapp.service.FavouriteProductService;
 import com.mycompany.myapp.service.criteria.FavouriteProductCriteria;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
-import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -15,14 +14,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -146,10 +140,17 @@ public class FavouriteProductResource {
         );
     }
 
+    /**
+     * {@code GET  /favourite-products} : get all the favouriteProducts.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of favouriteProducts in body.
+     */
     @GetMapping("/favourite-products")
-    public ResponseEntity<List<FavouriteProduct>> getAllFavouriteProducts(@ApiParam Pageable pageable) {
-        Page<FavouriteProduct> page = favouriteProductRepository.findByUserIsCurrentUser(pageable);
-        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
+    public ResponseEntity<List<FavouriteProduct>> getAllFavouriteProducts(FavouriteProductCriteria criteria) {
+        log.debug("REST request to get FavouriteProducts by criteria: {}", criteria);
+        List<FavouriteProduct> entityList = favouriteProductQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
     }
 
     /**

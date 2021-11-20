@@ -20,7 +20,9 @@
       "id": "ID",
       "name": "Name",
       "price": "Price",
-      "favouriteProduct": "Favourite Product"
+      "seller": "Seller",
+      "boughtProduct": "Bought Product",
+      "soldProduct": "Sold Product"
     }
   }
 }

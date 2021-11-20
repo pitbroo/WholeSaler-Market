@@ -8,14 +8,24 @@
     {
       "fieldName": "price",
       "fieldType": "Long"
+    },
+    {
+      "fieldName": "seller",
+      "fieldType": "String"
     }
   ],
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "favouriteProduct",
+      "otherEntityName": "boughtProduct",
       "otherEntityRelationshipName": "product",
-      "relationshipName": "favouriteProduct"
+      "relationshipName": "boughtProduct"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "soldProduct",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "soldProduct"
     }
   ],
   "entityTableName": "product",

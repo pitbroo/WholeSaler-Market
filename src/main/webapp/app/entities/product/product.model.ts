@@ -1,10 +1,13 @@
-import { IFavouriteProduct } from 'app/entities/favourite-product/favourite-product.model';
+import { IBoughtProduct } from 'app/entities/bought-product/bought-product.model';
+import { ISoldProduct } from 'app/entities/sold-product/sold-product.model';
 
 export interface IProduct {
   id?: number;
   name?: string | null;
   price?: number | null;
-  favouriteProducts?: IFavouriteProduct[] | null;
+  seller?: string | null;
+  boughtProducts?: IBoughtProduct[] | null;
+  soldProducts?: ISoldProduct[] | null;
 }
 
 export class Product implements IProduct {
@@ -12,7 +15,9 @@ export class Product implements IProduct {
     public id?: number,
     public name?: string | null,
     public price?: number | null,
-    public favouriteProducts?: IFavouriteProduct[] | null
+    public seller?: string | null,
+    public boughtProducts?: IBoughtProduct[] | null,
+    public soldProducts?: ISoldProduct[] | null
   ) {}
 }
 

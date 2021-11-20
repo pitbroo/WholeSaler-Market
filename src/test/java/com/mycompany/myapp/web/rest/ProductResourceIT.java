@@ -6,8 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.IntegrationTest;
-import com.mycompany.myapp.domain.FavouriteProduct;
+import com.mycompany.myapp.domain.BoughtProduct;
 import com.mycompany.myapp.domain.Product;
+import com.mycompany.myapp.domain.SoldProduct;
 import com.mycompany.myapp.repository.ProductRepository;
 import com.mycompany.myapp.service.criteria.ProductCriteria;
 import java.util.List;
@@ -38,6 +39,9 @@ class ProductResourceIT {
     private static final Long UPDATED_PRICE = 2L;
     private static final Long SMALLER_PRICE = 1L - 1L;
 
+    private static final String DEFAULT_SELLER = "AAAAAAAAAA";
+    private static final String UPDATED_SELLER = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/products";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -62,7 +66,7 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createEntity(EntityManager em) {
-        Product product = new Product().name(DEFAULT_NAME).price(DEFAULT_PRICE);
+        Product product = new Product().name(DEFAULT_NAME).price(DEFAULT_PRICE).seller(DEFAULT_SELLER);
         return product;
     }
 
@@ -73,7 +77,7 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createUpdatedEntity(EntityManager em) {
-        Product product = new Product().name(UPDATED_NAME).price(UPDATED_PRICE);
+        Product product = new Product().name(UPDATED_NAME).price(UPDATED_PRICE).seller(UPDATED_SELLER);
         return product;
     }
 
@@ -97,6 +101,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(testProduct.getSeller()).isEqualTo(DEFAULT_SELLER);
     }
 
     @Test
@@ -130,7 +135,8 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())));
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].seller").value(hasItem(DEFAULT_SELLER)));
     }
 
     @Test
@@ -146,7 +152,8 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.intValue()));
+            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.intValue()))
+            .andExpect(jsonPath("$.seller").value(DEFAULT_SELLER));
     }
 
     @Test
@@ -351,28 +358,132 @@ class ProductResourceIT {
 
     @Test
     @Transactional
-    void getAllProductsByFavouriteProductIsEqualToSomething() throws Exception {
+    void getAllProductsBySellerIsEqualToSomething() throws Exception {
         // Initialize the database
         productRepository.saveAndFlush(product);
-        FavouriteProduct favouriteProduct;
-        if (TestUtil.findAll(em, FavouriteProduct.class).isEmpty()) {
-            favouriteProduct = FavouriteProductResourceIT.createEntity(em);
-            em.persist(favouriteProduct);
+
+        // Get all the productList where seller equals to DEFAULT_SELLER
+        defaultProductShouldBeFound("seller.equals=" + DEFAULT_SELLER);
+
+        // Get all the productList where seller equals to UPDATED_SELLER
+        defaultProductShouldNotBeFound("seller.equals=" + UPDATED_SELLER);
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySellerIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+
+        // Get all the productList where seller not equals to DEFAULT_SELLER
+        defaultProductShouldNotBeFound("seller.notEquals=" + DEFAULT_SELLER);
+
+        // Get all the productList where seller not equals to UPDATED_SELLER
+        defaultProductShouldBeFound("seller.notEquals=" + UPDATED_SELLER);
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySellerIsInShouldWork() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+
+        // Get all the productList where seller in DEFAULT_SELLER or UPDATED_SELLER
+        defaultProductShouldBeFound("seller.in=" + DEFAULT_SELLER + "," + UPDATED_SELLER);
+
+        // Get all the productList where seller equals to UPDATED_SELLER
+        defaultProductShouldNotBeFound("seller.in=" + UPDATED_SELLER);
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySellerIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+
+        // Get all the productList where seller is not null
+        defaultProductShouldBeFound("seller.specified=true");
+
+        // Get all the productList where seller is null
+        defaultProductShouldNotBeFound("seller.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySellerContainsSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+
+        // Get all the productList where seller contains DEFAULT_SELLER
+        defaultProductShouldBeFound("seller.contains=" + DEFAULT_SELLER);
+
+        // Get all the productList where seller contains UPDATED_SELLER
+        defaultProductShouldNotBeFound("seller.contains=" + UPDATED_SELLER);
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySellerNotContainsSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+
+        // Get all the productList where seller does not contain DEFAULT_SELLER
+        defaultProductShouldNotBeFound("seller.doesNotContain=" + DEFAULT_SELLER);
+
+        // Get all the productList where seller does not contain UPDATED_SELLER
+        defaultProductShouldBeFound("seller.doesNotContain=" + UPDATED_SELLER);
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsByBoughtProductIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+        BoughtProduct boughtProduct;
+        if (TestUtil.findAll(em, BoughtProduct.class).isEmpty()) {
+            boughtProduct = BoughtProductResourceIT.createEntity(em);
+            em.persist(boughtProduct);
             em.flush();
         } else {
-            favouriteProduct = TestUtil.findAll(em, FavouriteProduct.class).get(0);
+            boughtProduct = TestUtil.findAll(em, BoughtProduct.class).get(0);
         }
-        em.persist(favouriteProduct);
+        em.persist(boughtProduct);
         em.flush();
-        product.addFavouriteProduct(favouriteProduct);
+        product.addBoughtProduct(boughtProduct);
         productRepository.saveAndFlush(product);
-        Long favouriteProductId = favouriteProduct.getId();
+        Long boughtProductId = boughtProduct.getId();
 
-        // Get all the productList where favouriteProduct equals to favouriteProductId
-        defaultProductShouldBeFound("favouriteProductId.equals=" + favouriteProductId);
+        // Get all the productList where boughtProduct equals to boughtProductId
+        defaultProductShouldBeFound("boughtProductId.equals=" + boughtProductId);
 
-        // Get all the productList where favouriteProduct equals to (favouriteProductId + 1)
-        defaultProductShouldNotBeFound("favouriteProductId.equals=" + (favouriteProductId + 1));
+        // Get all the productList where boughtProduct equals to (boughtProductId + 1)
+        defaultProductShouldNotBeFound("boughtProductId.equals=" + (boughtProductId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsBySoldProductIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+        SoldProduct soldProduct;
+        if (TestUtil.findAll(em, SoldProduct.class).isEmpty()) {
+            soldProduct = SoldProductResourceIT.createEntity(em);
+            em.persist(soldProduct);
+            em.flush();
+        } else {
+            soldProduct = TestUtil.findAll(em, SoldProduct.class).get(0);
+        }
+        em.persist(soldProduct);
+        em.flush();
+        product.addSoldProduct(soldProduct);
+        productRepository.saveAndFlush(product);
+        Long soldProductId = soldProduct.getId();
+
+        // Get all the productList where soldProduct equals to soldProductId
+        defaultProductShouldBeFound("soldProductId.equals=" + soldProductId);
+
+        // Get all the productList where soldProduct equals to (soldProductId + 1)
+        defaultProductShouldNotBeFound("soldProductId.equals=" + (soldProductId + 1));
     }
 
     /**
@@ -385,7 +496,8 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())));
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].seller").value(hasItem(DEFAULT_SELLER)));
 
         // Check, that the count call also returns 1
         restProductMockMvc
@@ -433,7 +545,7 @@ class ProductResourceIT {
         Product updatedProduct = productRepository.findById(product.getId()).get();
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
-        updatedProduct.name(UPDATED_NAME).price(UPDATED_PRICE);
+        updatedProduct.name(UPDATED_NAME).price(UPDATED_PRICE).seller(UPDATED_SELLER);
 
         restProductMockMvc
             .perform(
@@ -449,6 +561,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testProduct.getSeller()).isEqualTo(UPDATED_SELLER);
     }
 
     @Test
@@ -533,6 +646,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(testProduct.getSeller()).isEqualTo(DEFAULT_SELLER);
     }
 
     @Test
@@ -547,7 +661,7 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.name(UPDATED_NAME).price(UPDATED_PRICE);
+        partialUpdatedProduct.name(UPDATED_NAME).price(UPDATED_PRICE).seller(UPDATED_SELLER);
 
         restProductMockMvc
             .perform(
@@ -563,6 +677,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testProduct.getSeller()).isEqualTo(UPDATED_SELLER);
     }
 
     @Test

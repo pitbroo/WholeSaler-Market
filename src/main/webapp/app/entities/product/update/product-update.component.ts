@@ -19,6 +19,7 @@ export class ProductUpdateComponent implements OnInit {
     id: [],
     name: [],
     price: [],
+    seller: [],
   });
 
   constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -67,6 +68,7 @@ export class ProductUpdateComponent implements OnInit {
       id: product.id,
       name: product.name,
       price: product.price,
+      seller: product.seller,
     });
   }
 
@@ -76,6 +78,7 @@ export class ProductUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       price: this.editForm.get(['price'])!.value,
+      seller: this.editForm.get(['seller'])!.value,
     };
   }
 }

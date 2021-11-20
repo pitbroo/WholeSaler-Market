@@ -1,0 +1,27 @@
+{
+  "poloMarketApp": {
+    "soldProduct": {
+      "home": {
+        "title": "SoldProducts",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Sold Product",
+        "createOrEditLabel": "Créer ou éditer un Sold Product",
+        "notFound": "Aucun Sold Product trouvé"
+      },
+      "created": "Un nouveau Sold Product a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Sold Product avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Sold Product avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Sold Product {{ id }} ?"
+      },
+      "detail": {
+        "title": "Sold Product"
+      },
+      "id": "ID",
+      "date": "Date",
+      "price": "Price",
+      "user": "User",
+      "product": "Product"
+    }
+  }
+}

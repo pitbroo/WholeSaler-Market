@@ -30,7 +30,11 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private LongFilter price;
 
-    private LongFilter favouriteProductId;
+    private StringFilter seller;
+
+    private LongFilter boughtProductId;
+
+    private LongFilter soldProductId;
 
     private Boolean distinct;
 
@@ -40,7 +44,9 @@ public class ProductCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.price = other.price == null ? null : other.price.copy();
-        this.favouriteProductId = other.favouriteProductId == null ? null : other.favouriteProductId.copy();
+        this.seller = other.seller == null ? null : other.seller.copy();
+        this.boughtProductId = other.boughtProductId == null ? null : other.boughtProductId.copy();
+        this.soldProductId = other.soldProductId == null ? null : other.soldProductId.copy();
         this.distinct = other.distinct;
     }
 
@@ -94,19 +100,49 @@ public class ProductCriteria implements Serializable, Criteria {
         this.price = price;
     }
 
-    public LongFilter getFavouriteProductId() {
-        return favouriteProductId;
+    public StringFilter getSeller() {
+        return seller;
     }
 
-    public LongFilter favouriteProductId() {
-        if (favouriteProductId == null) {
-            favouriteProductId = new LongFilter();
+    public StringFilter seller() {
+        if (seller == null) {
+            seller = new StringFilter();
         }
-        return favouriteProductId;
+        return seller;
     }
 
-    public void setFavouriteProductId(LongFilter favouriteProductId) {
-        this.favouriteProductId = favouriteProductId;
+    public void setSeller(StringFilter seller) {
+        this.seller = seller;
+    }
+
+    public LongFilter getBoughtProductId() {
+        return boughtProductId;
+    }
+
+    public LongFilter boughtProductId() {
+        if (boughtProductId == null) {
+            boughtProductId = new LongFilter();
+        }
+        return boughtProductId;
+    }
+
+    public void setBoughtProductId(LongFilter boughtProductId) {
+        this.boughtProductId = boughtProductId;
+    }
+
+    public LongFilter getSoldProductId() {
+        return soldProductId;
+    }
+
+    public LongFilter soldProductId() {
+        if (soldProductId == null) {
+            soldProductId = new LongFilter();
+        }
+        return soldProductId;
+    }
+
+    public void setSoldProductId(LongFilter soldProductId) {
+        this.soldProductId = soldProductId;
     }
 
     public Boolean getDistinct() {
@@ -130,14 +166,16 @@ public class ProductCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(price, that.price) &&
-            Objects.equals(favouriteProductId, that.favouriteProductId) &&
+            Objects.equals(seller, that.seller) &&
+            Objects.equals(boughtProductId, that.boughtProductId) &&
+            Objects.equals(soldProductId, that.soldProductId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, favouriteProductId, distinct);
+        return Objects.hash(id, name, price, seller, boughtProductId, soldProductId, distinct);
     }
 
     // prettier-ignore
@@ -147,7 +185,9 @@ public class ProductCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (price != null ? "price=" + price + ", " : "") +
-            (favouriteProductId != null ? "favouriteProductId=" + favouriteProductId + ", " : "") +
+            (seller != null ? "seller=" + seller + ", " : "") +
+            (boughtProductId != null ? "boughtProductId=" + boughtProductId + ", " : "") +
+            (soldProductId != null ? "soldProductId=" + soldProductId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

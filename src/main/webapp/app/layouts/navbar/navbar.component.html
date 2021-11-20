@@ -54,16 +54,52 @@
               <span jhiTranslate="global.menu.entities.product">Product</span>
             </a>
           </li>
+<!--          <li>-->
+<!--            <a-->
+<!--              class="dropdown-item"-->
+<!--              routerLink="favourite-product"-->
+<!--              routerLinkActive="active"-->
+<!--              [routerLinkActiveOptions]="{ exact: true }"-->
+<!--              (click)="collapseNavbar()"-->
+<!--            >-->
+<!--              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>-->
+<!--              <span jhiTranslate="global.menu.entities.favouriteProduct">Favourite Product</span>-->
+<!--            </a>-->
+<!--          </li>-->
           <li>
             <a
               class="dropdown-item"
-              routerLink="favourite-product"
+              routerLink="bought-product"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               (click)="collapseNavbar()"
             >
               <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
-              <span jhiTranslate="global.menu.entities.favouriteProduct">Favourite Product</span>
+              <span jhiTranslate="global.menu.entities.boughtProduct">Bought Product</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="sold-product"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.soldProduct">Sold Product</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="transaction"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.transaction">Transaction</span>
             </a>
           </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
