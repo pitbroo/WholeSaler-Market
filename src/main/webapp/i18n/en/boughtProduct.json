@@ -1,0 +1,27 @@
+{
+  "poloMarketApp": {
+    "boughtProduct": {
+      "home": {
+        "title": "Bought Products",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Bought Product",
+        "createOrEditLabel": "Create or edit a Bought Product",
+        "notFound": "No Bought Products found"
+      },
+      "created": "A new Bought Product is created with identifier {{ param }}",
+      "updated": "A Bought Product is updated with identifier {{ param }}",
+      "deleted": "A Bought Product is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Bought Product {{ id }}?"
+      },
+      "detail": {
+        "title": "Bought Product"
+      },
+      "id": "ID",
+      "date": "Date",
+      "price": "Price",
+      "user": "User",
+      "product": "Product"
+    }
+  }
+}

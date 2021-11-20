@@ -9,6 +9,9 @@
         "main": "Entities",
         "product": "Product",
         "favouriteProduct": "Favourite Product",
+        "boughtProduct": "Bought Product",
+        "soldProduct": "Sold Product",
+        "transaction": "Transaction",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

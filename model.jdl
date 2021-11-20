@@ -1,19 +1,42 @@
 
 entity Product {
 	name String,
-    price Long
+    price Long,
+    seller String
 }
 
-entity FavouriteProduct {
+entity BoughtProduct {
+    date LocalDate,
+    price LocalDate
 }
-
+entity SoldProduct {
+    date LocalDate,
+    price LocalDate
+}
+entity Transaction {
+	price Double,
+    date LocalDate,
+    client String,
+    seller String
+}
 relationship OneToMany {
-	Product to FavouriteProduct
+	Product to BoughtProduct
 }
 relationship ManyToOne {
-	FavouriteProduct{user(login)} to User
+	BoughtProduct{user(login)} to User
+}
+relationship OneToMany {
+	Product to SoldProduct
+}
+relationship ManyToOne {
+	SoldProduct{user(login)} to User
+}
+relationship ManyToOne {
+	Transaction{user(login)} to User
 }
 
 
 service all with serviceImpl
 filter *
+
+

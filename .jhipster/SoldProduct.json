@@ -1,0 +1,38 @@
+{
+  "name": "SoldProduct",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "soldProduct",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "soldProduct",
+      "relationshipName": "product"
+    }
+  ],
+  "entityTableName": "sold_product",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20211120000404"
+}
