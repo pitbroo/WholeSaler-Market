@@ -38,7 +38,7 @@ spring:
 #    url: jdbc:sqlserver://148.81.196.51\LABSQLSVR01:49203;database=49084
 #    username: PL49084
 #    password: Polska1!
-#    hikari:
+    hikari:
       poolName: Hikari
       auto-commit: false
       data-source-properties:
