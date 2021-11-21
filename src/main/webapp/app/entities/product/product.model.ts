@@ -1,5 +1,6 @@
 import { IBoughtProduct } from 'app/entities/bought-product/bought-product.model';
 import { ISoldProduct } from 'app/entities/sold-product/sold-product.model';
+import { IUser } from 'app/entities/user/user.model';
 
 export interface IProduct {
   id?: number;
@@ -8,6 +9,7 @@ export interface IProduct {
   seller?: string | null;
   boughtProducts?: IBoughtProduct[] | null;
   soldProducts?: ISoldProduct[] | null;
+  user?: IUser | null;
 }
 
 export class Product implements IProduct {
@@ -17,7 +19,8 @@ export class Product implements IProduct {
     public price?: number | null,
     public seller?: string | null,
     public boughtProducts?: IBoughtProduct[] | null,
-    public soldProducts?: ISoldProduct[] | null
+    public soldProducts?: ISoldProduct[] | null,
+    public user?: IUser | null
   ) {}
 }
 

@@ -22,7 +22,8 @@
       "date": "Date",
       "client": "Client",
       "seller": "Seller",
-      "user": "User"
+      "user": "User",
+      "product": "Product"
     }
   }
 }

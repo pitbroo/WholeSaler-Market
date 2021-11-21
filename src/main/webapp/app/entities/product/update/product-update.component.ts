@@ -3,10 +3,12 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import { IProduct, Product } from '../product.model';
 import { ProductService } from '../service/product.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 
 @Component({
   selector: 'jhi-product-update',
@@ -15,18 +17,28 @@ import { ProductService } from '../service/product.service';
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
 
+  usersSharedCollection: IUser[] = [];
+
   editForm = this.fb.group({
     id: [],
     name: [],
     price: [],
     seller: [],
+    user: [],
   });
 
-  constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected productService: ProductService,
+    protected userService: UserService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ product }) => {
       this.updateForm(product);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -42,6 +54,10 @@ export class ProductUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.productService.create(product));
     }
+  }
+
+  trackUserById(index: number, item: IUser): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {
@@ -69,7 +85,18 @@ export class ProductUpdateComponent implements OnInit {
       name: product.name,
       price: product.price,
       seller: product.seller,
+      user: product.user,
     });
+
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, product.user);
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 
   protected createFromForm(): IProduct {
@@ -79,6 +106,7 @@ export class ProductUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       price: this.editForm.get(['price'])!.value,
       seller: this.editForm.get(['seller'])!.value,
+      user: this.editForm.get(['user'])!.value,
     };
   }
 }

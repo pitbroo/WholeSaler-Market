@@ -1,5 +1,6 @@
 import * as dayjs from 'dayjs';
 import { IUser } from 'app/entities/user/user.model';
+import { IProduct } from 'app/entities/product/product.model';
 
 export interface ITransaction {
   id?: number;
@@ -8,6 +9,7 @@ export interface ITransaction {
   client?: string | null;
   seller?: string | null;
   user?: IUser | null;
+  product?: IProduct | null;
 }
 
 export class Transaction implements ITransaction {
@@ -17,7 +19,8 @@ export class Transaction implements ITransaction {
     public date?: dayjs.Dayjs | null,
     public client?: string | null,
     public seller?: string | null,
-    public user?: IUser | null
+    public user?: IUser | null,
+    public product?: IProduct | null
   ) {}
 }
 

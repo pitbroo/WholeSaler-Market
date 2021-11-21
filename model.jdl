@@ -32,7 +32,13 @@ relationship ManyToOne {
 	SoldProduct{user(login)} to User
 }
 relationship ManyToOne {
-	Transaction{user(login)} to User
+	Transaction{user(login)} to User{transaction(client)}
+}
+relationship ManyToOne {
+	Transaction{product(name)} to Product
+}
+relationship ManyToOne{
+	Product{user(login)} to User
 }
 
 

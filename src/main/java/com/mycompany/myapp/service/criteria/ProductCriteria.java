@@ -36,6 +36,8 @@ public class ProductCriteria implements Serializable, Criteria {
 
     private LongFilter soldProductId;
 
+    private LongFilter userId;
+
     private Boolean distinct;
 
     public ProductCriteria() {}
@@ -47,6 +49,7 @@ public class ProductCriteria implements Serializable, Criteria {
         this.seller = other.seller == null ? null : other.seller.copy();
         this.boughtProductId = other.boughtProductId == null ? null : other.boughtProductId.copy();
         this.soldProductId = other.soldProductId == null ? null : other.soldProductId.copy();
+        this.userId = other.userId == null ? null : other.userId.copy();
         this.distinct = other.distinct;
     }
 
@@ -145,6 +148,21 @@ public class ProductCriteria implements Serializable, Criteria {
         this.soldProductId = soldProductId;
     }
 
+    public LongFilter getUserId() {
+        return userId;
+    }
+
+    public LongFilter userId() {
+        if (userId == null) {
+            userId = new LongFilter();
+        }
+        return userId;
+    }
+
+    public void setUserId(LongFilter userId) {
+        this.userId = userId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -169,13 +187,14 @@ public class ProductCriteria implements Serializable, Criteria {
             Objects.equals(seller, that.seller) &&
             Objects.equals(boughtProductId, that.boughtProductId) &&
             Objects.equals(soldProductId, that.soldProductId) &&
+            Objects.equals(userId, that.userId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, seller, boughtProductId, soldProductId, distinct);
+        return Objects.hash(id, name, price, seller, boughtProductId, soldProductId, userId, distinct);
     }
 
     // prettier-ignore
@@ -188,6 +207,7 @@ public class ProductCriteria implements Serializable, Criteria {
             (seller != null ? "seller=" + seller + ", " : "") +
             (boughtProductId != null ? "boughtProductId=" + boughtProductId + ", " : "") +
             (soldProductId != null ? "soldProductId=" + soldProductId + ", " : "") +
+            (userId != null ? "userId=" + userId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

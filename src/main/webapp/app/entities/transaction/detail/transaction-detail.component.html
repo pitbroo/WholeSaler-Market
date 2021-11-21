@@ -34,6 +34,12 @@
         <dd>
           <span>{{ transaction.user?.login }}</span>
         </dd>
+        <dt><span jhiTranslate="poloMarketApp.transaction.product">Product</span></dt>
+        <dd>
+          <div *ngIf="transaction.product">
+            <a [routerLink]="['/product', transaction.product?.id, 'view']">{{ transaction.product?.name }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

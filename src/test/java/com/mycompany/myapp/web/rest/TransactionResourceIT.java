@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.IntegrationTest;
+import com.mycompany.myapp.domain.Product;
 import com.mycompany.myapp.domain.Transaction;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.TransactionRepository;
@@ -570,6 +571,32 @@ class TransactionResourceIT {
 
         // Get all the transactionList where user equals to (userId + 1)
         defaultTransactionShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionsByProductIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionRepository.saveAndFlush(transaction);
+        Product product;
+        if (TestUtil.findAll(em, Product.class).isEmpty()) {
+            product = ProductResourceIT.createEntity(em);
+            em.persist(product);
+            em.flush();
+        } else {
+            product = TestUtil.findAll(em, Product.class).get(0);
+        }
+        em.persist(product);
+        em.flush();
+        transaction.setProduct(product);
+        transactionRepository.saveAndFlush(transaction);
+        Long productId = product.getId();
+
+        // Get all the transactionList where product equals to productId
+        defaultTransactionShouldBeFound("productId.equals=" + productId);
+
+        // Get all the transactionList where product equals to (productId + 1)
+        defaultTransactionShouldNotBeFound("productId.equals=" + (productId + 1));
     }
 
     /**
