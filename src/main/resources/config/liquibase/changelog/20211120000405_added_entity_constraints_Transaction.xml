@@ -13,5 +13,11 @@
                                  constraintName="fk_jhi_transaction__user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="jhi_transaction"
+                                 constraintName="fk_jhi_transaction__product_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product"/>
     </changeSet>
 </databaseChangeLog>

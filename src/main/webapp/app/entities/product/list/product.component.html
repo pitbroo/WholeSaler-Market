@@ -8,7 +8,7 @@
         <span jhiTranslate="poloMarketApp.product.home.refreshListLabel">Refresh List</span>
       </button>
 
-      <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+      <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-product"
@@ -36,6 +36,7 @@
           <th scope="col"><span jhiTranslate="poloMarketApp.product.name">Name</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.price">Price</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.seller">Seller</span></th>
+          <th scope="col"><span jhiTranslate="poloMarketApp.product.user">User</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,6 +48,9 @@
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.seller }}</td>
+          <td>
+            {{ product.user?.login }}
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button
@@ -59,7 +63,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>
 
-              <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+              <button
                 type="submit"
                 [routerLink]="['/product', product.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -69,7 +73,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+              <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>

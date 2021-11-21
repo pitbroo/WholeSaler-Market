@@ -103,6 +103,12 @@ public class TransactionQueryService extends QueryService<Transaction> {
                         buildSpecification(criteria.getUserId(), root -> root.join(Transaction_.user, JoinType.LEFT).get(User_.id))
                     );
             }
+            if (criteria.getProductId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getProductId(), root -> root.join(Transaction_.product, JoinType.LEFT).get(Product_.id))
+                    );
+            }
         }
         return specification;
     }

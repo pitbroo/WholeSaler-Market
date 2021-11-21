@@ -25,6 +25,13 @@
       "otherEntityRelationshipName": "transaction",
       "relationshipName": "user",
       "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "transaction",
+      "relationshipName": "product",
+      "otherEntityField": "name"
     }
   ],
   "entityTableName": "jhi_transaction",

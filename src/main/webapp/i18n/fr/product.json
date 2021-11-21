@@ -22,7 +22,8 @@
       "price": "Price",
       "seller": "Seller",
       "boughtProduct": "Bought Product",
-      "soldProduct": "Sold Product"
+      "soldProduct": "Sold Product",
+      "user": "User"
     }
   }
 }

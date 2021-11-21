@@ -38,6 +38,7 @@
           <th scope="col"><span jhiTranslate="poloMarketApp.transaction.client">Client</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.transaction.seller">Seller</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.transaction.user">User</span></th>
+          <th scope="col"><span jhiTranslate="poloMarketApp.transaction.product">Product</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -52,6 +53,11 @@
           <td>{{ transaction.seller }}</td>
           <td>
             {{ transaction.user?.login }}
+          </td>
+          <td>
+            <div *ngIf="transaction.product">
+              <a [routerLink]="['/product', transaction.product?.id, 'view']">{{ transaction.product?.name }}</a>
+            </div>
           </td>
           <td class="text-right">
             <div class="btn-group">

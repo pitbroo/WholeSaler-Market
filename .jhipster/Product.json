@@ -26,6 +26,13 @@
       "otherEntityName": "soldProduct",
       "otherEntityRelationshipName": "product",
       "relationshipName": "soldProduct"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "user",
+      "otherEntityField": "login"
     }
   ],
   "entityTableName": "product",

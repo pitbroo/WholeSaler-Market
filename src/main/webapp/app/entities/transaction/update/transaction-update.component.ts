@@ -9,6 +9,8 @@ import { ITransaction, Transaction } from '../transaction.model';
 import { TransactionService } from '../service/transaction.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { IProduct } from 'app/entities/product/product.model';
+import { ProductService } from 'app/entities/product/service/product.service';
 
 @Component({
   selector: 'jhi-transaction-update',
@@ -18,6 +20,7 @@ export class TransactionUpdateComponent implements OnInit {
   isSaving = false;
 
   usersSharedCollection: IUser[] = [];
+  productsSharedCollection: IProduct[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -26,11 +29,13 @@ export class TransactionUpdateComponent implements OnInit {
     client: [],
     seller: [],
     user: [],
+    product: [],
   });
 
   constructor(
     protected transactionService: TransactionService,
     protected userService: UserService,
+    protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -61,6 +66,10 @@ export class TransactionUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  trackProductById(index: number, item: IProduct): number {
+    return item.id!;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransaction>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -88,9 +97,11 @@ export class TransactionUpdateComponent implements OnInit {
       client: transaction.client,
       seller: transaction.seller,
       user: transaction.user,
+      product: transaction.product,
     });
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, transaction.user);
+    this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, transaction.product);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -99,6 +110,14 @@ export class TransactionUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
+    this.productService
+      .query()
+      .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
+      .pipe(
+        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('product')!.value))
+      )
+      .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
   }
 
   protected createFromForm(): ITransaction {
@@ -110,6 +129,7 @@ export class TransactionUpdateComponent implements OnInit {
       client: this.editForm.get(['client'])!.value,
       seller: this.editForm.get(['seller'])!.value,
       user: this.editForm.get(['user'])!.value,
+      product: this.editForm.get(['product'])!.value,
     };
   }
 }

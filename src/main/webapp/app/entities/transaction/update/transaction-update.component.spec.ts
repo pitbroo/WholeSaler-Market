@@ -12,6 +12,8 @@ import { ITransaction, Transaction } from '../transaction.model';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { IProduct } from 'app/entities/product/product.model';
+import { ProductService } from 'app/entities/product/service/product.service';
 
 import { TransactionUpdateComponent } from './transaction-update.component';
 
@@ -21,6 +23,7 @@ describe('Transaction Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let transactionService: TransactionService;
   let userService: UserService;
+  let productService: ProductService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,6 +38,7 @@ describe('Transaction Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     transactionService = TestBed.inject(TransactionService);
     userService = TestBed.inject(UserService);
+    productService = TestBed.inject(ProductService);
 
     comp = fixture.componentInstance;
   });
@@ -59,16 +63,38 @@ describe('Transaction Management Update Component', () => {
       expect(comp.usersSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Product query and add missing value', () => {
+      const transaction: ITransaction = { id: 456 };
+      const product: IProduct = { id: 38028 };
+      transaction.product = product;
+
+      const productCollection: IProduct[] = [{ id: 9332 }];
+      jest.spyOn(productService, 'query').mockReturnValue(of(new HttpResponse({ body: productCollection })));
+      const additionalProducts = [product];
+      const expectedCollection: IProduct[] = [...additionalProducts, ...productCollection];
+      jest.spyOn(productService, 'addProductToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ transaction });
+      comp.ngOnInit();
+
+      expect(productService.query).toHaveBeenCalled();
+      expect(productService.addProductToCollectionIfMissing).toHaveBeenCalledWith(productCollection, ...additionalProducts);
+      expect(comp.productsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const transaction: ITransaction = { id: 456 };
       const user: IUser = { id: 91238 };
       transaction.user = user;
+      const product: IProduct = { id: 73643 };
+      transaction.product = product;
 
       activatedRoute.data = of({ transaction });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(transaction));
       expect(comp.usersSharedCollection).toContain(user);
+      expect(comp.productsSharedCollection).toContain(product);
     });
   });
 
@@ -141,6 +167,14 @@ describe('Transaction Management Update Component', () => {
       it('Should return tracked User primary key', () => {
         const entity = { id: 123 };
         const trackResult = comp.trackUserById(0, entity);
+        expect(trackResult).toEqual(entity.id);
+      });
+    });
+
+    describe('trackProductById', () => {
+      it('Should return tracked Product primary key', () => {
+        const entity = { id: 123 };
+        const trackResult = comp.trackProductById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

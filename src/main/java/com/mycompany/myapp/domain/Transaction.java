@@ -1,5 +1,6 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
@@ -36,6 +37,10 @@ public class Transaction implements Serializable {
 
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "boughtProducts", "soldProducts", "user" }, allowSetters = true)
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -114,6 +119,19 @@ public class Transaction implements Serializable {
 
     public Transaction user(User user) {
         this.setUser(user);
+        return this;
+    }
+
+    public Product getProduct() {
+        return this.product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Transaction product(Product product) {
+        this.setProduct(product);
         return this;
     }
 

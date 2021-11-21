@@ -9,6 +9,7 @@ import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.BoughtProduct;
 import com.mycompany.myapp.domain.Product;
 import com.mycompany.myapp.domain.SoldProduct;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.ProductRepository;
 import com.mycompany.myapp.service.criteria.ProductCriteria;
 import java.util.List;
@@ -484,6 +485,32 @@ class ProductResourceIT {
 
         // Get all the productList where soldProduct equals to (soldProductId + 1)
         defaultProductShouldNotBeFound("soldProductId.equals=" + (soldProductId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllProductsByUserIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productRepository.saveAndFlush(product);
+        User user;
+        if (TestUtil.findAll(em, User.class).isEmpty()) {
+            user = UserResourceIT.createEntity(em);
+            em.persist(user);
+            em.flush();
+        } else {
+            user = TestUtil.findAll(em, User.class).get(0);
+        }
+        em.persist(user);
+        em.flush();
+        product.setUser(user);
+        productRepository.saveAndFlush(product);
+        Long userId = user.getId();
+
+        // Get all the productList where user equals to userId
+        defaultProductShouldBeFound("userId.equals=" + userId);
+
+        // Get all the productList where user equals to (userId + 1)
+        defaultProductShouldNotBeFound("userId.equals=" + (userId + 1));
     }
 
     /**
