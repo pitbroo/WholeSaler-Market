@@ -1,8 +1,11 @@
 package com.mycompany.myapp.repository;
 
 import com.mycompany.myapp.domain.Product;
-import java.util.List;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,5 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
     @Query("select product from Product product where product.user.login = ?#{principal.username}")
-    List<Product> findByUserIsCurrentUser();
+    Page<Product> findByUserIsCurrentUser(Pageable pageable);
 }
