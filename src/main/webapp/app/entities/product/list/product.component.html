@@ -35,8 +35,9 @@
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.name">Name</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.price">Price</span></th>
+<!--          Saller = User w encji-->
           <th scope="col"><span jhiTranslate="poloMarketApp.product.seller">Seller</span></th>
-          <th scope="col"><span jhiTranslate="poloMarketApp.product.user">User</span></th>
+<!--          <th scope="col"><span jhiTranslate="poloMarketApp.product.user">User</span></th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,7 +48,6 @@
           </td>
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
-          <td>{{ product.seller }}</td>
           <td>
             {{ product.user?.login }}
           </td>
