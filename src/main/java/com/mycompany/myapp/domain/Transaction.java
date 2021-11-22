@@ -29,14 +29,14 @@ public class Transaction implements Serializable {
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "client")
-    private String client;
-
-    @Column(name = "seller")
-    private String seller;
+    @ManyToOne
+    @JoinColumn(name = "id_client")
+    private User client;
 
     @ManyToOne
-    private User user;
+    @JoinColumn(name = "id_saller")
+    private User seller;
+
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "boughtProducts", "soldProducts", "user" }, allowSetters = true)
@@ -83,44 +83,24 @@ public class Transaction implements Serializable {
         this.date = date;
     }
 
-    public String getClient() {
-        return this.client;
+    public User getClient() {
+        return client;
     }
 
-    public Transaction client(String client) {
-        this.setClient(client);
-        return this;
-    }
-
-    public void setClient(String client) {
+    public Transaction setClient(User client) {
         this.client = client;
-    }
-
-    public String getSeller() {
-        return this.seller;
-    }
-
-    public Transaction seller(String seller) {
-        this.setSeller(seller);
         return this;
     }
 
-    public void setSeller(String seller) {
+    public User getSeller() {
+        return seller;
+    }
+
+    public Transaction setSeller(User seller) {
         this.seller = seller;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Transaction user(User user) {
-        this.setUser(user);
         return this;
     }
+
 
     public Product getProduct() {
         return this.product;

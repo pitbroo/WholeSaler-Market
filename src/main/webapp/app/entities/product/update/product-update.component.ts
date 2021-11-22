@@ -9,7 +9,6 @@ import { IProduct, Product } from '../product.model';
 import { ProductService } from '../service/product.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
-import { User } from '../user-management.model';
 
 
 @Component({
@@ -18,7 +17,6 @@ import { User } from '../user-management.model';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
-  user!: User;
 
   usersSharedCollection: IUser[] = [];
 
