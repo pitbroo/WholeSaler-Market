@@ -28,10 +28,10 @@ public class Product implements Serializable {
     private String name;
 
     @Column(name = "price")
-    private Long price;
+    private Float price;
 
-    @Column(name = "seller")
-    private String seller;
+//    @Column(name = "seller")
+//    private String seller;
 
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -74,31 +74,31 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public Float getPrice() {
         return this.price;
     }
 
-    public Product price(Long price) {
+    public Product price(Float price) {
         this.setPrice(price);
         return this;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public String getSeller() {
-        return this.seller;
-    }
-
-    public Product seller(String seller) {
-        this.setSeller(seller);
-        return this;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
-    }
+//    public String getSeller() {
+//        return this.seller;
+//    }
+//
+//    public Product seller(String seller) {
+//        this.setSeller(seller);
+//        return this;
+//    }
+//
+//    public void setSeller(String seller) {
+//        this.seller = seller;
+//    }
 
     public Set<BoughtProduct> getBoughtProducts() {
         return this.boughtProducts;
@@ -201,7 +201,7 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", price=" + getPrice() +
-            ", seller='" + getSeller() + "'" +
+//            ", seller='" + getSeller() + "'" +
             "}";
     }
 }

@@ -9,6 +9,7 @@
       </button>
 
       <button
+        *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_SELLER']"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-product"
@@ -35,8 +36,9 @@
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.name">Name</span></th>
           <th scope="col"><span jhiTranslate="poloMarketApp.product.price">Price</span></th>
+<!--          Saller = User w encji-->
           <th scope="col"><span jhiTranslate="poloMarketApp.product.seller">Seller</span></th>
-          <th scope="col"><span jhiTranslate="poloMarketApp.product.user">User</span></th>
+<!--          <th scope="col"><span jhiTranslate="poloMarketApp.product.user">User</span></th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,7 +49,6 @@
           </td>
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
-          <td>{{ product.seller }}</td>
           <td>
             {{ product.user?.login }}
           </td>
@@ -63,7 +64,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>
 
-              <button
+              <button *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_SELLER']"
                 type="submit"
                 [routerLink]="['/product', product.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -73,7 +74,9 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_SELLER']"
+                type="submit" (click)="delete(product)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>

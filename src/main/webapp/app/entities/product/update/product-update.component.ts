@@ -9,6 +9,8 @@ import { IProduct, Product } from '../product.model';
 import { ProductService } from '../service/product.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { User } from '../user-management.model';
+
 
 @Component({
   selector: 'jhi-product-update',
@@ -16,6 +18,7 @@ import { UserService } from 'app/entities/user/user.service';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
+  user!: User;
 
   usersSharedCollection: IUser[] = [];
 
@@ -85,6 +88,7 @@ export class ProductUpdateComponent implements OnInit {
       name: product.name,
       price: product.price,
       seller: product.seller,
+      //tutaj wstawić danego usera(sallerac)
       user: product.user,
     });
 
