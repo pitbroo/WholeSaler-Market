@@ -20,15 +20,18 @@
             <column name="date" type="date">
                 <constraints nullable="true" />
             </column>
-            <column name="client" type="varchar(255)">
+            <column name="client_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="seller" type="varchar(255)">
+            <column name="seller_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="user_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
+<!--            <column name="user_id" type="bigint">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
+<!--            <column name="user_id" type="bigint">-->
+<!--                <constraints nullable="true" />-->
+<!--            </column>-->
             <column name="product_id" type="bigint">
                 <constraints nullable="true" />
             </column>
