@@ -141,11 +141,12 @@ public class ProductResource {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProducts(@ApiParam Pageable pageable) {
         if (SecurityUtils.getCurrentUserLogin().isPresent()) {
-            if (SecurityUtils.getCurrentUserLogin().get().equals("user")) {
+            if (SecurityUtils.hasCurrentUserAnyOfAuthorities("ROLE_ADMIN", "ROLE_USER")) {
                 List<Product> productList = productService.findAll();
                 return ResponseEntity.ok(productList);
             }
         }
+
         Page<Product> page = productRepository.findByUserIsCurrentUser(pageable);
         return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
