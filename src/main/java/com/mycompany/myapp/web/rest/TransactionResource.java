@@ -162,6 +162,10 @@ public class TransactionResource {
                 List<Transaction> transactionList = transactionService.findAll();
                 return ResponseEntity.ok(transactionList);
             }
+            if (SecurityUtils.hasCurrentUserAnyOfAuthorities("ROLE_SELLER")) {
+                Page<Transaction> page = transactionRepository.findAllBySeller(pageable);
+                return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
+            }
         }
 
         Page<Transaction> page = transactionRepository.findByUserIsCurrentUser(pageable);
