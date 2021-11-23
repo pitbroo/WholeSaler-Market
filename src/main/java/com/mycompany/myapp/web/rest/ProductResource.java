@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Product;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.ProductRepository;
+import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.ProductQueryService;
 import com.mycompany.myapp.service.ProductService;
@@ -44,10 +46,18 @@ public class ProductResource {
 
     private final ProductQueryService productQueryService;
 
-    public ProductResource(ProductService productService, ProductRepository productRepository, ProductQueryService productQueryService) {
+    private final UserRepository userRepository;
+
+    public ProductResource(
+        ProductService productService,
+        ProductRepository productRepository,
+        ProductQueryService productQueryService,
+        UserRepository userRepository
+    ) {
         this.productService = productService;
         this.productRepository = productRepository;
         this.productQueryService = productQueryService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -63,6 +73,12 @@ public class ProductResource {
         if (product.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        if (SecurityUtils.getCurrentUserLogin().isPresent()) {
+            Optional<User> currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get());
+            currentUser.ifPresent(product::setUser);
+        }
+
         Product result = productService.save(product);
         return ResponseEntity
             .created(new URI("/api/products/" + result.getId()))

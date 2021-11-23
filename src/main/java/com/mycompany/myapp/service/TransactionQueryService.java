@@ -91,7 +91,7 @@ public class TransactionQueryService extends QueryService<Transaction> {
             if (criteria.getDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getDate(), Transaction_.date));
             }
-            if (criteria.getClient() != null) {
+            /*if (criteria.getClient() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getClient(), Transaction_.client));
             }
             if (criteria.getSeller() != null) {
@@ -102,7 +102,7 @@ public class TransactionQueryService extends QueryService<Transaction> {
                     specification.and(
                         buildSpecification(criteria.getUserId(), root -> root.join(Transaction_.user, JoinType.LEFT).get(User_.id))
                     );
-            }
+            }*/
             if (criteria.getProductId() != null) {
                 specification =
                     specification.and(

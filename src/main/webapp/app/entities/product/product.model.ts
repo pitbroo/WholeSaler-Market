@@ -1,6 +1,6 @@
 import { IBoughtProduct } from 'app/entities/bought-product/bought-product.model';
-import { ISoldProduct } from 'app/entities/sold-product/sold-product.model';
 import { IUser } from 'app/entities/user/user.model';
+import { ISoldProduct } from '../sold-product/sold-product.model';
 
 export interface IProduct {
   id?: number;

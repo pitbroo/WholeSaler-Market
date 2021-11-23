@@ -34,9 +34,11 @@ public class Transaction implements Serializable {
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "id_saller")
+    @JoinColumn(name = "id_seller")
     private User seller;
 
+    @ManyToOne
+    private User user;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "boughtProducts", "soldProducts", "user" }, allowSetters = true)
@@ -101,7 +103,6 @@ public class Transaction implements Serializable {
         return this;
     }
 
-
     public Product getProduct() {
         return this.product;
     }
@@ -113,6 +114,14 @@ public class Transaction implements Serializable {
     public Transaction product(Product product) {
         this.setProduct(product);
         return this;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
