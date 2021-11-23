@@ -7,7 +7,7 @@ export interface ITransaction {
   price?: number | null;
   date?: dayjs.Dayjs | null;
   client?: string | null;
-  seller?: string | null;
+  seller?: IUser | null;
   user?: IUser | null;
   product?: IProduct | null;
 }
@@ -18,7 +18,7 @@ export class Transaction implements ITransaction {
     public price?: number | null,
     public date?: dayjs.Dayjs | null,
     public client?: string | null,
-    public seller?: string | null,
+    public seller?: IUser | null,
     public user?: IUser | null,
     public product?: IProduct | null
   ) {}

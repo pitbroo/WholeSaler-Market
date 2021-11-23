@@ -79,12 +79,12 @@ export class ProductComponent implements OnInit {
   buy(account: Account | undefined | null, product: Product): void {
 
     const transaction = new Transaction();
-    // transaction.client = account?.login;
-    // transaction.seller = product.seller;
+    //transaction.client = account?.login;
+    transaction.seller = product.user;
+    transaction.client = product.seller;
     transaction.product = product;
     transaction.price = product.price;
     transaction.user = account;
-
     this.subscribeToSaveResponse(this.transactionService.create(transaction));
   }
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITransaction>>): void {

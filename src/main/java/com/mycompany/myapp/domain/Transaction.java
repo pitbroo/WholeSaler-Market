@@ -30,11 +30,11 @@ public class Transaction implements Serializable {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "id_client")
+    @JoinColumn(name = "user_id", updatable = false, insertable = false)
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "id_seller")
+    @JoinColumn(name = "user_id", insertable = false,updatable = false)
     private User seller;
 
     @ManyToOne

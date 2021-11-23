@@ -2,6 +2,7 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Transaction;
 import com.mycompany.myapp.repository.TransactionRepository;
+import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.service.TransactionQueryService;
 import com.mycompany.myapp.service.TransactionService;
 import com.mycompany.myapp.service.criteria.TransactionCriteria;
@@ -39,14 +40,17 @@ public class TransactionResource {
 
     private final TransactionQueryService transactionQueryService;
 
+    private final UserRepository userRepository;
+
     public TransactionResource(
         TransactionService transactionService,
         TransactionRepository transactionRepository,
-        TransactionQueryService transactionQueryService
-    ) {
+        TransactionQueryService transactionQueryService,
+        UserRepository userRepository) {
         this.transactionService = transactionService;
         this.transactionRepository = transactionRepository;
         this.transactionQueryService = transactionQueryService;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -62,6 +66,7 @@ public class TransactionResource {
         if (transaction.getId() != null) {
             throw new BadRequestAlertException("A new transaction cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        log.
         Transaction result = transactionService.save(transaction);
         return ResponseEntity
             .created(new URI("/api/transactions/" + result.getId()))

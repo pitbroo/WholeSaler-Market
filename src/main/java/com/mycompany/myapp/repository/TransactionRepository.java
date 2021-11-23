@@ -13,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
     @Query("select jhiTransaction from Transaction jhiTransaction where jhiTransaction.user.login = ?#{principal.username}")
     List<Transaction> findByUserIsCurrentUser();
+
 }
