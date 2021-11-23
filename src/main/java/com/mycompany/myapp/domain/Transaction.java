@@ -30,14 +30,15 @@ public class Transaction implements Serializable {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", updatable = false, insertable = false)
+    @JoinColumn(name = "id_client")
     private User client;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false,updatable = false)
+    @JoinColumn(name = "id_seller")
     private User seller;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
@@ -144,14 +145,17 @@ public class Transaction implements Serializable {
     }
 
     // prettier-ignore
+
     @Override
     public String toString() {
         return "Transaction{" +
-            "id=" + getId() +
-            ", price=" + getPrice() +
-            ", date='" + getDate() + "'" +
-            ", client='" + getClient() + "'" +
-            ", seller='" + getSeller() + "'" +
-            "}";
+            "id=" + id +
+            ", price=" + price +
+            ", date=" + date +
+            ", client=" + client +
+            ", seller=" + seller +
+            ", user=" + user +
+            ", product=" + product +
+            '}';
     }
 }

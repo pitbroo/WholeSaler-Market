@@ -1,20 +1,27 @@
 package com.mycompany.myapp.web.rest;
 
+import com.mycompany.myapp.domain.Product;
 import com.mycompany.myapp.domain.Transaction;
 import com.mycompany.myapp.repository.TransactionRepository;
 import com.mycompany.myapp.repository.UserRepository;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.service.TransactionQueryService;
 import com.mycompany.myapp.service.TransactionService;
 import com.mycompany.myapp.service.criteria.TransactionCriteria;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
+import io.swagger.annotations.ApiParam;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -46,7 +53,8 @@ public class TransactionResource {
         TransactionService transactionService,
         TransactionRepository transactionRepository,
         TransactionQueryService transactionQueryService,
-        UserRepository userRepository) {
+        UserRepository userRepository
+    ) {
         this.transactionService = transactionService;
         this.transactionRepository = transactionRepository;
         this.transactionQueryService = transactionQueryService;
@@ -66,7 +74,8 @@ public class TransactionResource {
         if (transaction.getId() != null) {
             throw new BadRequestAlertException("A new transaction cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        log.
+        log.info("Tutaj są dane otrzymanej z frontu transakcji: " + transaction);
+        transaction.setDate(LocalDate.now());
         Transaction result = transactionService.save(transaction);
         return ResponseEntity
             .created(new URI("/api/transactions/" + result.getId()))
@@ -144,17 +153,19 @@ public class TransactionResource {
         );
     }
 
-    /**
-     * {@code GET  /transactions} : get all the transactions.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactions in body.
-     */
     @GetMapping("/transactions")
-    public ResponseEntity<List<Transaction>> getAllTransactions(TransactionCriteria criteria) {
-        log.debug("REST request to get Transactions by criteria: {}", criteria);
-        List<Transaction> entityList = transactionQueryService.findByCriteria(criteria);
-        return ResponseEntity.ok().body(entityList);
+    public ResponseEntity<List<Transaction>> getAllTransactions(@ApiParam Pageable pageable) {
+        /*log.debug("REST request to get Transactions by criteria: {}", criteria);
+        List<Transaction> entityList = transactionQueryService.findByCriteria(criteria);*/
+        if (SecurityUtils.getCurrentUserLogin().isPresent()) {
+            if (SecurityUtils.hasCurrentUserAnyOfAuthorities("ROLE_ADMIN")) {
+                List<Transaction> transactionList = transactionService.findAll();
+                return ResponseEntity.ok(transactionList);
+            }
+        }
+
+        Page<Transaction> page = transactionRepository.findByUserIsCurrentUser(pageable);
+        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
 
     /**

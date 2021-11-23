@@ -24,10 +24,6 @@
         </dd>
         <dt><span jhiTranslate="poloMarketApp.product.seller">Seller</span></dt>
         <dd>
-          <span>{{ product.seller }}</span>
-        </dd>
-        <dt><span jhiTranslate="poloMarketApp.product.user">User</span></dt>
-        <dd>
           <span>{{ product.user?.login }}</span>
         </dd>
       </dl>
@@ -36,7 +32,12 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+      <button
+        *jhiHasAnyAuthority="['ROLE_ADMIN', 'ROLE_SELLER']"
+        type="button"
+        [routerLink]="['/product', product.id, 'edit']"
+        class="btn btn-primary"
+      >
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

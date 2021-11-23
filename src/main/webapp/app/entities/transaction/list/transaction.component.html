@@ -49,7 +49,7 @@
           </td>
           <td>{{ transaction.price }}</td>
           <td>{{ transaction.date | formatMediumDate }}</td>
-          <td>{{ transaction.seller }}</td>
+          <td>{{ transaction.seller?.login }}</td>
           <td>
             {{ transaction.user?.login }}
           </td>

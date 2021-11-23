@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {IProduct, Product} from '../product.model';
-import {ProductService} from '../service/product.service';
-import {ProductDeleteDialogComponent} from '../delete/product-delete-dialog.component';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/auth/account.model';
-import {ITransaction, Transaction} from "../../transaction/transaction.model";
-import {TransactionService} from "../../transaction/service/transaction.service";
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IProduct, Product } from '../product.model';
+import { ProductService } from '../service/product.service';
+import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { ITransaction, Transaction } from '../../transaction/transaction.model';
+import { TransactionService } from '../../transaction/service/transaction.service';
 import DateTimeFormat = Intl.DateTimeFormat;
-import {Observable} from "rxjs";
-import {finalize} from "rxjs/operators";
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-product',
@@ -19,19 +19,22 @@ import {finalize} from "rxjs/operators";
 export class ProductComponent implements OnInit {
   products?: IProduct[];
   account!: Account;
-  transaction!: Transaction
+  transaction!: Transaction;
   isSaving = false;
 
   isLoading = false;
   test: any | null | undefined;
   prod: any | null | undefined;
 
-  constructor(protected productService: ProductService, protected modalService: NgbModal, protected accountService: AccountService,
-              protected transactionService: TransactionService) {
-    this.test = "test"
-    this.prod = "produkt"
+  constructor(
+    protected productService: ProductService,
+    protected modalService: NgbModal,
+    protected accountService: AccountService,
+    protected transactionService: TransactionService
+  ) {
+    this.test = 'test';
+    this.prod = 'produkt';
   }
-
 
   loadAll(): void {
     this.isLoading = true;
@@ -60,7 +63,7 @@ export class ProductComponent implements OnInit {
   }
 
   delete(product: IProduct): void {
-    const modalRef = this.modalService.open(ProductDeleteDialogComponent, {size: 'lg', backdrop: 'static'});
+    const modalRef = this.modalService.open(ProductDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.product = product;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
@@ -70,18 +73,16 @@ export class ProductComponent implements OnInit {
     });
   }
 
-
   //funkcja kuppowania przez usrea
   previousState(): void {
     window.history.back();
   }
 
   buy(account: Account | undefined | null, product: Product): void {
-
     const transaction = new Transaction();
     //transaction.client = account?.login;
     transaction.seller = product.user;
-    transaction.client = product.seller;
+    //transaction.client = product.seller;
     transaction.product = product;
     transaction.price = product.price;
     transaction.user = account;
@@ -102,5 +103,4 @@ export class ProductComponent implements OnInit {
   protected onSaveError(): void {
     // Api for inheritance.
   }
-
 }
