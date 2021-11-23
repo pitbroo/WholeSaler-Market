@@ -74,8 +74,8 @@ export class ProductComponent implements OnInit {
   }
 
   //funkcja kuppowania przez usrea
-  previousState(): void {
-    window.history.back();
+  goToTransactions(): void {
+    window.location.replace("/transaction");
   }
 
   buy(account: Account | undefined | null, product: Product): void {
@@ -98,7 +98,7 @@ export class ProductComponent implements OnInit {
     this.isSaving = false;
   }
   protected onSaveSuccess(): void {
-    this.previousState();
+    this.goToTransactions();
   }
   protected onSaveError(): void {
     // Api for inheritance.
