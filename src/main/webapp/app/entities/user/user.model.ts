@@ -10,3 +10,6 @@ export class User implements IUser {
 export function getUserIdentifier(user: IUser): number | undefined {
   return user.id;
 }
+export function getUserLogin(user: IUser): string | undefined{
+  return  user.login;
+}
